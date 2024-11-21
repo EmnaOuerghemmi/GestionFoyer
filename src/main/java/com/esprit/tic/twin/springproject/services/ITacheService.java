@@ -9,4 +9,5 @@ public interface ITacheService {
     Tache updateTache(Tache t);
     Tache retrieveTache(Long idTache);
     void removeTache(Long idTache);
+    List<Tache> addTasksAndAffectToEtudiant(List<Tache> tasks, String nomEt, String prenomEt);
 }

@@ -1,7 +1,9 @@
 package com.esprit.tic.twin.springproject.services;
 
 import com.esprit.tic.twin.springproject.entities.Etudiant;
+import com.esprit.tic.twin.springproject.entities.Reservation;
 import com.esprit.tic.twin.springproject.repositories.EtudiantRepository;
+import com.esprit.tic.twin.springproject.repositories.ReservationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class EtudiantServiceImpl implements IEtudiantService{
     EtudiantRepository etudiantRepository;
+    ReservationRepository reservationRepository;
 
     @Override
     public List<Etudiant> retrieveAllEtudiants() {
@@ -36,4 +39,20 @@ public class EtudiantServiceImpl implements IEtudiantService{
     public void removeEtudiant(Long idEtudiant) {
         etudiantRepository.deleteById(idEtudiant);
     }
+    @Override
+    public Etudiant affecterEtudiantAReservation(String nomEt, String prenomEt, String idReservation) {
+        Etudiant etudiant = etudiantRepository.findByNomEtAndPrenomEt(nomEt, prenomEt);
+        if (etudiant == null) {
+            throw new RuntimeException("Étudiant non trouvé avec le nom : " + nomEt + " et le prénom : " + prenomEt);
+        }
+        Reservation reservation = reservationRepository.findById(idReservation).orElse(null);
+        if (reservation == null) {
+            throw new RuntimeException("Réservation non trouvée avec l'ID : " + idReservation);
+        }
+        etudiant.getReservations().add(reservation);
+        etudiantRepository.save(etudiant);
+
+        return etudiant;
+    }
+
 }

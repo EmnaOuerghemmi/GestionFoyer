@@ -12,7 +12,7 @@ public interface ChambreRepository extends JpaRepository<Chambre, Long> {
     List<Chambre> findByBlocNomBlocAndTypeC(String s, TypeChambre x);
     List<Chambre> findByReservationsEstValide(Boolean x);
     List<Chambre> findByBlocCapaciteBlocGreaterThanAndBlocNomBloc(Long x, String nom);
-
+    List<Chambre> findByNumeroChambreIn(List<Long> numChambres);
     @Query("SELECT c FROM Chambre c WHERE c.bloc.nomBloc = :nombloc AND c.typeC = :typechambre")
     List<Chambre> retrieveChambres(@Param("nombloc") String s, @Param("typechambre") TypeChambre x);
 

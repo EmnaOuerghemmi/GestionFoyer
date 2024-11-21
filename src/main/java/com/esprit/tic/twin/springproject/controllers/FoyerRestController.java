@@ -37,4 +37,9 @@ public class FoyerRestController {
     public void removeFoyer(@PathVariable("foyer-id") Long idUniversrite) {
         foyerService.removeFoyer(idUniversrite);
     }
+
+    @PostMapping("/add-with-blocs")
+    public Foyer addFoyerWithBloc(@RequestBody Foyer foyer) {
+        return foyerService.addFoyerWithBloc(foyer);
+    }
 }

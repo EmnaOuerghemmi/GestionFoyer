@@ -1,7 +1,9 @@
 package com.esprit.tic.twin.springproject.services;
 
 import com.esprit.tic.twin.springproject.entities.Bloc;
+import com.esprit.tic.twin.springproject.entities.Chambre;
 import com.esprit.tic.twin.springproject.repositories.BlocRepository;
+import com.esprit.tic.twin.springproject.repositories.ChambreRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BlocServiceImpl implements IBlocService{
     BlocRepository blocRepository;
+    ChambreRepository chambreRepository;
     @Override
     public List<Bloc> retrieveAllBlocs() {
         return blocRepository.findAll();
@@ -34,6 +37,31 @@ public class BlocServiceImpl implements IBlocService{
     @Override
     public void removeBloc(Long idBloc) {
         blocRepository.deleteById(idBloc);
+    }
+    @Override
+    public Bloc affecterChambresABloc(List<Long> numChambre, String nomBloc) {
+        // Récupérer le bloc par son nom
+        Bloc bloc = blocRepository.findByNomBloc(nomBloc);
+        if (bloc == null) {
+            throw new RuntimeException("Bloc non trouvé avec le nom : " + nomBloc);
+        }
+
+        // Récupérer les chambres par leurs numéros
+        List<Chambre> chambres = chambreRepository.findByNumeroChambreIn(numChambre);
+        if (chambres.isEmpty()) {
+            throw new RuntimeException("Aucune chambre trouvée pour les numéros donnés.");
+        }
+
+        // Affecter chaque chambre au bloc
+        for (Chambre chambre : chambres) {
+            chambre.setBloc(bloc);
+        }
+
+        // Sauvegarder les chambres mises à jour
+        chambreRepository.saveAll(chambres);
+
+        // Retourner le bloc mis à jour
+        return bloc;
     }
 
     @Override

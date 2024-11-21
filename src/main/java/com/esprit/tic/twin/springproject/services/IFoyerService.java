@@ -10,4 +10,5 @@ public interface IFoyerService {
     Foyer retrieveFoyer(Long idFoyer);
     void removeFoyer(Long idFoyer);
     List<Foyer> retrieveFoyerByNomUniversity(String nomUniversity);
+    Foyer addFoyerWithBloc(Foyer f);
 }
