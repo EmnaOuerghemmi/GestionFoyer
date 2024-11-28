@@ -1,6 +1,7 @@
 package com.esprit.tic.twin.springproject.services;
 
 import com.esprit.tic.twin.springproject.entities.Chambre;
+import com.esprit.tic.twin.springproject.entities.TypeChambre;
 import com.esprit.tic.twin.springproject.repositories.ChambreRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,9 @@ public class ChambreServiceImpl implements IChambreService{
     @Override
     public void removeChambre(Long idChambre) {
         chambreRepository.deleteById(idChambre);
+    }
+    @Override
+    public List<Chambre> getChambresParNomBlocAndTypeChambre(String s, TypeChambre t) {
+        return chambreRepository.findByBlocNomBlocAndTypeC(s, t);
     }
 }

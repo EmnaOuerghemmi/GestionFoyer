@@ -1,6 +1,7 @@
 package com.esprit.tic.twin.springproject.controllers;
 
 import com.esprit.tic.twin.springproject.entities.Chambre;
+import com.esprit.tic.twin.springproject.entities.TypeChambre;
 import com.esprit.tic.twin.springproject.services.IChambreService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +41,9 @@ public class ChambreRestController {
     @DeleteMapping("/{id}")
     public void deleteChambre(@PathVariable Long id) {
         chambreService.removeChambre(id);
+    }
+    @GetMapping("/retrieve-blocs-keywords/{nom-bloc}/{type-chambre}")
+    public List<Chambre> retrieveBlocsByNameAndTypeChambre(@PathVariable("nom-bloc") String s, @PathVariable("type-chambre") TypeChambre t) {
+        return chambreService.getChambresParNomBlocAndTypeChambre(s, t);
     }
 }
