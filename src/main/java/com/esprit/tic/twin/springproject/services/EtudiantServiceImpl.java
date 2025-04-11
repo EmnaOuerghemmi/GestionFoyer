@@ -45,21 +45,22 @@ public class EtudiantServiceImpl implements IEtudiantService{
     }
     @Override
     public Etudiant affecterEtudiantAReservation(String nomEt, String prenomEt, String idReservation) {
-        //Same work every time we have many-to-many relation
         Etudiant e = etudiantRepository.findByNomEtAndPrenomEt(nomEt, prenomEt);
         Reservation r = reservationRepository.findByIdReservation(idReservation);
 
-        //Etudiant is the parent cause mappedBy is in reservation so reservation is child!
-        Set<Reservation> reservationsMisesAJour = new HashSet<Reservation>();
-        if(e.getReservations()!=null) {
-            reservationsMisesAJour = e.getReservations();
+        if (e.getReservations() != null) {
+            e.getReservations().size(); // Force le chargement des réservations existantes
         }
+
+        Set<Reservation> reservationsMisesAJour = e.getReservations();
         reservationsMisesAJour.add(r);
         e.setReservations(reservationsMisesAJour);
+
         etudiantRepository.save(e);
 
         return e;
     }
+
 
     @Override
     public HashMap<String, Float> calculNouveauMontantInscriptionDesEtudiants(String nomEt, String prenomEt) {

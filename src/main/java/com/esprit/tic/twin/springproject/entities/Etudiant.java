@@ -1,5 +1,6 @@
 package com.esprit.tic.twin.springproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -29,8 +30,11 @@ public class Etudiant implements Serializable {
     @Enumerated(EnumType.STRING)
     private TypeEtudiant typeEtudiant;
     @ManyToMany
+    @JsonIgnore
     private Set<Reservation> reservations;
+
     @OneToMany(mappedBy = "etudiantOrdinaire")
+    @JsonIgnore
     private Set<Tache> taches;
     @OneToOne
     private Tache tache;
